@@ -1,1 +1,1 @@
-duration.count() 0
+duration.count() 63

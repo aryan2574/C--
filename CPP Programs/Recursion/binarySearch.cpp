@@ -61,13 +61,68 @@ void ayush_2574_cp()
 
 // ____________________________________________________________________________________
 
+// Check if an array is sorted
+bool isSorted(int *arr, int n)
+{
+    // base case
+    if (n == 0 || n == 1)
+        return true;
+
+    // recursive case
+    if (arr[0] < arr[1] && isSorted(arr + 1, n - 1))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+// Binary Search - Recursion Implementation
+int binarySearchRecursion(int *arr, int low, int high, int key)
+{
+    // base case
+    if (high >= low)
+    {
+        int mid = low + (high - low) / 2;
+
+        // If the element is present at the middle
+        if (arr[mid] == key)
+        {
+            return mid;
+        }
+
+        // If element is smaller than mid, then call the left subarray
+        if (key < arr[mid])
+        {
+            return binarySearchRecursion(arr, low, mid - 1, key);
+        }
+
+        // Else call the right subarray
+        return binarySearchRecursion(arr, mid + 1, high, key);
+    }
+    return -1;
+}
+
 void solve()
 {
-    int t;
-    cin >> t;
-    while (t--)
-    {
-    }
+    int sze;
+    cin >> sze;
+    int arr[sze];
+    for (int i = 0; i < sze; i++)
+        cin >> arr[i];
+
+    int key;
+    cin >> key;
+
+    int low = 0, high = sze - 1;
+
+    // cout << isSorted(arr, sze) << nline;
+
+    int ans = binarySearchRecursion(arr, low, high, key);
+    if (ans == -1)
+        cout << "Element not found" << nline;
+    else
+        cout << "Elelment found at Index " << ans << nline;
 }
 
 // _____________________________________________________________________________________
