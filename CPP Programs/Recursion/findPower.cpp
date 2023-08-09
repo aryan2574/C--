@@ -76,6 +76,18 @@ int findPowerRecursion(int n, int pow)
     return subProb;
 }
 
+// Find power - a^n  - O(n)
+ll calcPower(int a, int n)
+{
+    // Base case
+    if (n == 0)
+        return 1;
+
+    // Recursive Case
+    int subProb = a * calcPower(a, n - 1);
+    return subProb;
+}
+
 // Calculate power using Binary Exponentiation
 int findPowerRecursionFast(int n, int pow)
 {
@@ -97,19 +109,6 @@ int findPowerRecursionFast(int n, int pow)
     }
 }
 
-// Multiply two numbers without using -> * <- operator : Add a number t times
-int mulNumbersRecursion(int n, int t)
-{
-    // Base Case
-    if (t == 1)
-        return n;
-
-    // Recursive Case
-    int subProb = n + mulNumbersRecursion(n, t - 1);
-
-    return subProb;
-}
-
 // Fast method - using Binary Exponentiation
 int mulNumbersRecursionFast(int n, int t)
 {
@@ -129,6 +128,37 @@ int mulNumbersRecursionFast(int n, int t)
     {
         return n + subProb + subProb;
     }
+}
+
+// Fast power function - exponentiation by squaring - Calculate - a^n - O(logn)
+ll calcPowerFast(int a, int n)
+{
+    // Base Case
+    if (n == 0)
+        return 1;
+
+    // Recursive case
+    int subProb = calcPower(a, n / 2);
+
+    // If n is odd - a * a^n/2 * a^n/2
+    if (n & 1)
+        return a * subProb * subProb;
+
+    // else n is even
+    return subProb * subProb;
+}
+
+// Multiply two numbers without using -> * <- operator : Add a number t times to itself
+int mulNumbersRecursion(int n, int t)
+{
+    // Base Case
+    if (t == 1)
+        return n;
+
+    // Recursive Case
+    int subProb = n + mulNumbersRecursion(n, t - 1);
+
+    return subProb;
 }
 
 void solve()
