@@ -132,8 +132,9 @@ bool nQueenProblem(int board[][10], int m, int n, int i)
     {
         if (isASafePosition(board, m, n, i, j))
         {
-            board[i][j] = 1;
+            board[i][j] = 1; // Place the queen
 
+            // Next recursion call
             bool nextQueenRakhPaye = nQueenProblem(board, m, n, i + 1);
             if (nextQueenRakhPaye)
                 return true;
