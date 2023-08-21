@@ -86,8 +86,13 @@ bool canWePlace(int matrix[][N], int N, int i, int j, int currNum)
     }
 
     // Check in the current sub-matrix
+    // Start Index of current sub-matrix -
+    // sx = (i / sqrt(N)) * sqrt(N)
+    // sy = (j / sqrt(N)) * sqrt(N)
+
     int n = sqrt(N);
-    int sx = (i / n) * n, sy = (j / n) * n;
+    int sx = (i / n) * n;
+    int sy = (j / n) * n;
 
     for (int p = sx; p < sx + n; p++)
     {
