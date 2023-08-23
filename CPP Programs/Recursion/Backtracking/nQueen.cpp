@@ -78,6 +78,7 @@ void printBoard(int board[][10], int m, int n)
     cout << nline;
 }
 
+// Check whether the current position is safe to put queen or not
 bool isASafePosition(int board[][10], int m, int n, int i, int j)
 {
     // Check the col
@@ -87,10 +88,10 @@ bool isASafePosition(int board[][10], int m, int n, int i, int j)
             return false;
     }
 
-    // Check left diagonal
     int x = i;
     int y = j;
 
+    // Check left diagonal
     while (x >= 0 && y >= 0)
     {
         if (board[x--][y--] == 1)
@@ -110,6 +111,47 @@ bool isASafePosition(int board[][10], int m, int n, int i, int j)
     return true;
 }
 
+// Give all solutions for the nQueen problem
+int nQueenProblemAllSOlutions(int board[][10], int m, int n, int i)
+{
+    // Base Case
+    if (i == m)
+    {
+        // Print board
+        printBoard(board, m, n);
+        return 1;
+    }
+
+    // Recursive Case
+    // Start with first row : check whether we can place the queen at the current postion
+    // To check : 1. Check if there is already any queen presents in the current col
+    // 2. Check if diagonally up left and up right any queen is present or not
+    // If not place the queen and move to the next row
+    // Otherwise, don't place the queen, return false and backtrack.
+
+    int ans(0);
+
+    // Try to place queen at every col position in the current row
+    for (int j = 0; j < n; j++)
+    {
+        if (isASafePosition(board, m, n, i, j))
+        {
+            board[i][j] = 1; // Place the queen
+
+            // Next recursion call
+            ans += nQueenProblemAllSOlutions(board, m, n, i + 1);
+
+            // If placing queen in board[i][col] doesn't lead to a solution, then
+            // remove queen from board[i][col]
+            board[i][j] = 0; // Backtrack
+        }
+    }
+
+    // We have tried for all positions in the current row and could not place the queen
+    return ans;
+}
+
+// Give 1 solution for the nQueen problem
 bool nQueenProblem(int board[][10], int m, int n, int i)
 {
     // Base Case
@@ -128,6 +170,7 @@ bool nQueenProblem(int board[][10], int m, int n, int i)
     // If not place the queen and move to the next row
     // Otherwise, don't place the queen, return false and backtrack.
 
+    // Try to place queen at every col position in the current row
     for (int j = 0; j < n; j++)
     {
         if (isASafePosition(board, m, n, i, j))
@@ -157,7 +200,13 @@ void solve()
     int board[10][10] = {0};
     int m(x), n(x);
 
-    nQueenProblem(board, m, n, 0);
+    // For one solution
+    // nQueenProblem(board, m, n, 0);
+
+    // For all solutions
+    int ans = nQueenProblemAllSOlutions(board, m, n, 0);
+
+    cout << "Total combinations : " << ans << nline;
 }
 
 // _____________________________________________________________________________________
