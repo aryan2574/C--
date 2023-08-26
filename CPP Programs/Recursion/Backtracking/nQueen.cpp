@@ -111,7 +111,7 @@ bool isASafePosition(int board[][10], int m, int n, int i, int j)
     return true;
 }
 
-// Give all solutions for the nQueen problem
+// Give all solutions for the nQueen problem and total count of solutions
 int nQueenProblemAllSOlutions(int board[][10], int m, int n, int i)
 {
     // Base Case
