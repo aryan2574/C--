@@ -69,22 +69,24 @@ Step 1 : Calculate Frequency of the numbers in the array
 Step 2 : Iterate through frequency array and print the numbers by their frequency times
     eq:  Freq[6] = 2 : print 6 6
 
-Since we are iterating through 0 - new created array will be sorted
+Since we are iterating through 0 in our frequency array - newly created array will be sorted
 */
 
-const int inp[] = {88, 97, 10, 12, 15, 1, 5, 6, 12, 5, 8};
+int inp[] = {88, 97, 10, 12, 15, 1, 5, 6, 12, 5, 8};
 
 void solve()
 {
-
+    // Take Input
     int n = sizeof(inp) / sizeof(int);
+
+    // Vector to store the sorted array
     vector<int> sortedArray;
 
     // Find maximum in the array to create frequency array
     int mx = *max_element(&inp[0], &inp[n - 1]);
 
     // Frequency Array
-    int freq[mx + 1] = {0};
+    int *freq = new int[mx + 1]{0};
 
     for (int i = 0; i < n; i++)
     {
@@ -94,7 +96,7 @@ void solve()
     // Create sorted array according to frequency
     for (int i = 0, currFreq; i <= mx; i++)
     {
-        currFreq = freq[i];
+        currFreq = freq[i]; // Store the current frequency of the number - Index : 1 have 5 frequency. eg - 1 1 1 1 1
         if (currFreq)
         {
             while (currFreq)
@@ -108,7 +110,26 @@ void solve()
 
     // Print sorted Array
     for (auto ele : sortedArray)
-        cout << ele << nline;
+        cout << ele << ' ';
+
+    cout << nline;
+
+    // Inline sorting - Change the parent array according to the frequency
+    for (int i = 0, j = 0; i <= mx; i++)
+    {
+        while (freq[i] > 0)
+        {
+            inp[j++] = i;
+            freq[i]--;
+        }
+    }
+
+    for (int i = 0; i < n; i++)
+        cout << inp[i] << ' ';
+    cout << nline;
+
+    // Delete Frequency Array
+    delete[] freq;
 }
 
 // _____________________________________________________________________________________
