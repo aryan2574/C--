@@ -72,7 +72,15 @@ Step 2 : Iterate through frequency array and print the numbers by their frequenc
 Since we are iterating through 0 in our frequency array - newly created array will be sorted
 */
 
-int inp[] = {88, 97, 10, 12, 15, 1, 5, 6, 12, 5, 8};
+/*
+Algorithm Steps:
+
+    Find the Range: First, identify the range of input elements. This means finding the minimum and maximum values present in the input array.
+
+    Count Frequencies: Create a counting array count of size (maxValue - minValue + 1) and initialize all its elements to 0. Then, traverse the input array and increment the corresponding count for each element. The index of count array represents the value in the input array.
+*/
+
+int inp[] = {88, 97, 10, 12, 15, 9, 5, 6, 12, 5, 8};
 
 void solve()
 {
@@ -85,6 +93,9 @@ void solve()
     // Find maximum in the array to create frequency array
     int mx = *max_element(&inp[0], &inp[n - 1]);
 
+    // Find the minimum in the array
+    int mn = *min_element(&inp[0], &inp[n - 1]);
+
     // Frequency Array
     int *freq = new int[mx + 1]{0};
 
@@ -94,7 +105,7 @@ void solve()
     }
 
     // Create sorted array according to frequency
-    for (int i = 0, currFreq; i <= mx; i++)
+    for (int i = mn, currFreq; i <= mx; i++)
     {
         currFreq = freq[i]; // Store the current frequency of the number - Index : 1 have 5 frequency. eg - 1 1 1 1 1
         if (currFreq)
