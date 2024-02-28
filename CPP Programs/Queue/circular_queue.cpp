@@ -61,103 +61,105 @@ void ayush_2574_cp()
 
 // ____________________________________________________________________________________
 
-// QUEUE IMPLEMENTATION
-
-// We take two variables - front , rear
-
-#define N 5
-int que[N];
-int front = -1, rear = -1;
-
-void enque(int x)
+class MyCircularQueue
 {
-    // Check for overflow condition - rear at the last - QUEUE is full
-    if (rear == N - 1)
-    {
-        cout << "Overflow\n";
-    }
-    // QUEUE is empty -> front = rear = -1
-    else if (front == -1 && rear == -1)
-    {
-        front = rear = 0;
-        que[rear] = x;
-    }
-    // If already some data
-    else
-    {
-        rear++;
-        que[rear] = x;
-    }
-}
+private:
+    vector<int> q;
+    int start_p;
+    int curr;
+    int end_p;
+    int size;
 
-void deq()
-{
-    // If queue is empty
-    if (front == -1 && rear == -1)
+public:
+    MyCircularQueue(int k)
     {
-        cout << "NO elements present" << nline;
+        q.resize(k);
+        size = k;
+        start_p = -1;
+        curr = 0;
+        end_p = -1;
     }
-    // If there is only one element
-    else if (front == rear)
-    {
-        front = rear = -1;
-    }
-    // Queue is not empty & there are more then 1 element
-    else
-    {
-        cout << que[front] << nline;
-        front++;
-    }
-}
 
-void displayElements()
-{
-    // Empty queue condition
-    if (front == -1 && rear == -1)
+    bool enQueue(int value)
     {
-        cout << "QUEUE is empty";
-    }
-    else
-    {
-        for (int i = front; i <= rear; i++)
+        if (isFull())
         {
-            cout << que[i] << ' ';
+            return false;
         }
-        cout << nline;
-    }
-}
 
-void peek()
-{
-    // Empty queue condition
-    if (front == -1 && rear == -1)
-    {
-        cout << "QUEUE is empty";
+        end_p = (end_p + 1) % size;
+        q[end_p] = value;
+        if (start_p == -1)
+        {
+            start_p = 0;
+        }
+        curr++;
+        return true;
     }
-    else
+
+    bool deQueue()
     {
-        cout << "DATA at front - " << que[front] << nline;
+        if (isEmpty())
+        {
+            return false;
+        }
+
+        if (start_p == end_p)
+        {
+            start_p = -1;
+            end_p = -1;
+        }
+        else
+        {
+            start_p = (start_p + 1) % size;
+        }
+        curr--;
+        return true;
     }
-}
+
+    int Front()
+    {
+        if (isEmpty())
+        {
+            return -1;
+        }
+        return q[start_p];
+    }
+
+    int Rear()
+    {
+        if (isEmpty())
+        {
+            return -1;
+        }
+        return q[end_p];
+    }
+
+    bool isEmpty()
+    {
+        return curr == 0;
+    }
+
+    bool isFull()
+    {
+        return curr == size;
+    }
+};
 
 void solve()
 {
-    enque(1);
-    enque(2);
-    enque(3);
-    enque(4);
-    enque(5);
+    MyCircularQueue *myCircularQueue = new MyCircularQueue(3);
+    cout << myCircularQueue->enQueue(1) << nline; // return True
+    cout << myCircularQueue->enQueue(2) << nline; // return True
+    cout << myCircularQueue->enQueue(3) << nline; // return True
+    cout << myCircularQueue->enQueue(4) << nline; // return False
+    cout << myCircularQueue->Rear() << nline;     // return 3
+    cout << myCircularQueue->isFull() << nline;   // return True
+    cout << myCircularQueue->deQueue() << nline;  // return True
+    cout << myCircularQueue->enQueue(4) << nline; // return True
+    cout << myCircularQueue->Rear() << nline;     // return 4
 
-    displayElements();
-    peek();
-
-    deq();
-    peek();
-
-    displayElements();
-
-    enque(6);
-    displayElements();
+    delete myCircularQueue;
 }
 
 // _____________________________________________________________________________________
