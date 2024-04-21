@@ -127,8 +127,8 @@ public:
             {
                 temp = temp->children[ch];
             }
-            return temp->terminal;
         }
+        return temp->terminal;
     }
 };
 
