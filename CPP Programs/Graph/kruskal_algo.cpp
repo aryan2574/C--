@@ -66,7 +66,6 @@ void ayush_2574_cp()
 
 class DSU
 {
-
     int *parent;
     int *rank;
 
@@ -76,11 +75,11 @@ public:
         parent = new int[n];
         rank = new int[n];
 
-        // Parent= -1 , rank= -1
+        // Parent = -1 , rank = 0
         for (int i = 0; i < n; i++)
         {
             parent[i] = -1;
-            rank[i] = 1;
+            rank[i] = 0; // Initialize rank to 0
         }
     }
 
@@ -106,12 +105,15 @@ public:
             if (rank[s1] < rank[s2])
             {
                 parent[s1] = s2;
-                rank[s2] += rank[s1];
+            }
+            else if (rank[s1] > rank[s2])
+            {
+                parent[s2] = s1;
             }
             else
             {
-                parent[s2] = s1;
-                rank[s1] += rank[s2];
+                parent[s1] = s2;
+                rank[s2]++;
             }
         }
     }

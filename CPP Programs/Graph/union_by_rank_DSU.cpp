@@ -109,10 +109,11 @@ public:
         int *parent = new int[V];
         int *rank = new int[V];
 
+        // Initialize parent and rank arrays
         for (int i = 0; i < V; i++)
         {
             parent[i] = -1;
-            rank[i] = 1;
+            rank[i] = 0; // Initialize rank to 0
         }
 
         for (auto edge : l)
@@ -124,16 +125,22 @@ public:
             int s2 = findSet(j, parent);
 
             if (s1 != s2)
+            {
                 union_set(s1, s2, parent, rank);
+            }
             else
             {
+                // Cycle detected, clean up memory and return true
                 delete[] parent;
                 delete[] rank;
                 return true;
             }
         }
-        delete[] parent; // Moved deletion of parent outside loop
+
+        // Clean up memory before returning false
+        delete[] parent;
         delete[] rank;
+
         return false;
     }
 };
