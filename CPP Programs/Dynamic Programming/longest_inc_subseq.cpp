@@ -114,6 +114,7 @@ int longestIncSubseq2(int *arr, int n, int *dp)
     return lis;
 }
 
+// Time - O(NlogN)
 int longestIncSubseq3(int *arr, int n, int *dp)
 {
     dp[0] = INT_MIN;
