@@ -61,25 +61,40 @@ void ayush_2574_cp()
 
 // ____________________________________________________________________________________
 
-// Matrix chain multiplication --
-// Time - O(N^3)
-// Space - O(N)
+// Bottom Up - Tabulation method for Matrix Chain Multiplication
+// Time Complexity: O(N^3)
+// Space Complexity: O(N^2)
+int matrixMultiplication3(vector<int> &arr, int N, vector<vector<int>> &dp)
+{
+    // Initializing the diagonal to 0 because the cost of multiplying one matrix is zero
+    for (int i = 1; i < N; i++)
+        dp[i][i] = 0;
 
-/*
-I/P:
-2
-4
-4 5 3 2
-4
-10 15 20 25
+    // Start filling the dp table in a bottom-up manner
+    for (int i = N - 1; i >= 1; i--)
+    {
+        for (int j = i + 1; j < N; j++)
+        {
+            int mini = INT_MAX;
 
+            // Try all possible places to split the product
+            for (int k = i; k < j; k++)
+            {
+                // Cost of splitting at position k
+                int steps = arr[i - 1] * arr[k] * arr[j] + dp[i][k] + dp[k + 1][j];
 
-O/p:
-70
-8000
-*/
+                // Find the minimum cost
+                mini = min(mini, steps);
+            }
+            dp[i][j] = mini;
+        }
+    }
+    return dp[1][N - 1];
+}
 
 // DP Solution - Memoization
+// Time Complexity: O(N^3)
+// Space Complexity: O(N^2)
 int f2(int i, int j, vector<int> &arr, vector<vector<int>> &dp)
 {
     if (i == j)
@@ -90,6 +105,7 @@ int f2(int i, int j, vector<int> &arr, vector<vector<int>> &dp)
 
     int mini = INT_MAX;
 
+    // Try all possible places to split the product
     for (int k = i; k < j; k++)
     {
         int steps = arr[i - 1] * arr[k] * arr[j] + f2(i, k, arr, dp) + f2(k + 1, j, arr, dp);
@@ -99,12 +115,13 @@ int f2(int i, int j, vector<int> &arr, vector<vector<int>> &dp)
     return dp[i][j] = mini;
 }
 
-int matrixMultiplication(vector<int> &arr, int N, vector<vector<int>> &dp)
+int matrixMultiplication2(vector<int> &arr, int N, vector<vector<int>> &dp)
 {
     return f2(1, N - 1, arr, dp);
 }
 
 // Recursion solution - O(2^N)
+// Very inefficient for large N due to exponential time complexity
 int f(int i, int j, vector<int> &arr)
 {
     if (i == j)
@@ -112,6 +129,7 @@ int f(int i, int j, vector<int> &arr)
 
     int mini = INT_MAX;
 
+    // Try all possible places to split the product
     for (int k = i; k < j; k++)
     {
         int steps = (arr[i - 1] * arr[k] * arr[j]) + f(i, k, arr) + f(k + 1, j, arr);
@@ -138,14 +156,22 @@ void solve()
         for (int i = 0; i < N; i++)
             cin >> arr[i];
 
-        // Initialize the dp array with -1
+        // Initialize the dp array with -1 for memoization solution
         vector<vector<int>> dp(N, vector<int>(N, -1));
 
-        // Calling the recursive solution
-        cout << matrixMultiplication(arr, N) << endl;
+        // Uncomment the desired method to test
+
+        // Calling the recursive solution (inefficient for large N)
+        // cout << matrixMultiplication(arr, N) << endl;
 
         // Calling the memoized DP solution
-        cout << matrixMultiplication(arr, N, dp) << endl;
+        // cout << matrixMultiplication2(arr, N, dp) << endl;
+
+        // Reset the dp array for tabulation method
+        dp.assign(N, vector<int>(N, 0));
+
+        // Calling the tabulation DP method
+        cout << matrixMultiplication3(arr, N, dp) << endl;
     }
 }
 
