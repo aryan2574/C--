@@ -61,6 +61,24 @@ void ayush_2574_cp()
 
 // ____________________________________________________________________________________
 
+// Matrix chain multiplication --
+// Time - O(N^3)
+// Space - O(N)
+
+/*
+I/P:
+2
+4
+4 5 3 2
+4
+10 15 20 25
+
+
+O/p:
+70
+8000
+*/
+
 // DP Solution - Memoization
 int f2(int i, int j, vector<int> &arr, vector<vector<int>> &dp)
 {
