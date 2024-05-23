@@ -70,14 +70,73 @@ class Heap
     bool compare(int child, int parent)
     {
         if (minHeap)
-            return child < parent; // Change from <= to < for strict heap property
+            return child < parent; // For min-heap
         else
-            return child > parent; // Change from >= to > for strict heap property
+            return child > parent; // For max-heap
+    }
+
+    // Function to find the appropriate child to swap with based on the heap type
+    int getBetterChild(int idx, int sze)
+    {
+        int leftChild = 2 * idx;
+        int rightChild = 2 * idx + 1;
+
+        if (leftChild <= sze && rightChild <= sze)
+        {
+            // Both children exist
+            if (compare(v[leftChild], v[rightChild]))
+            {
+                return leftChild;
+            }
+            else
+            {
+                return rightChild;
+            }
+        }
+        else if (leftChild <= sze)
+        {
+            // Only left child exists
+            return leftChild;
+        }
+        else if (rightChild <= sze)
+        {
+            // Only right child exists
+            return rightChild;
+        }
+        else
+        {
+            // No child exists
+            return -1;
+        }
+    }
+
+    // Function to maintain the heap property from the given index downwards
+    void heapify(int idx)
+    {
+        int left = 2 * idx, right = 2 * idx + 1;
+        int betterChild = idx;
+        int last = v.size() - 1;
+
+        if (left <= last && compare(v[left], v[idx]))
+        {
+            betterChild = left;
+        }
+
+        if (right <= last && compare(v[right], v[betterChild]))
+        {
+            betterChild = right;
+        }
+
+        if (betterChild != idx)
+        {
+            swap(v[idx], v[betterChild]);
+            heapify(betterChild);
+        }
     }
 
 public:
-    // Constructor with default size and heap type (true for min-heap, false for max-heap)
-    Heap(int default_size = 10, bool type = true)
+    // Constructor with default size and explicit heap type (true for min-heap, false for max-heap)
+    Heap(int default_size = 10, bool type)
     {
         // Reserve memory according to requirement
         v.reserve(default_size);
@@ -110,6 +169,68 @@ public:
         }
     }
 
+    // Function to get the top element of the heap
+    int top()
+    {
+        if (v.size() <= 1)
+        {
+            // Heap is empty
+            cout << "Heap is empty" << endl;
+            return -1;
+        }
+
+        return v[1];
+    }
+
+    // Pop function to remove the top element from the heap
+    void pop()
+    {
+        if (v.size() <= 1)
+        {
+            // Heap is empty
+            cout << "Heap is empty" << endl;
+            return;
+        }
+
+        cout << "Element removed: " << v[1] << "\n"; // Print the root element (for debugging)
+
+        // Swap with the last element
+        swap(v[1], v[v.size() - 1]);
+        v.pop_back();
+
+        int idx = 1;
+        int sze = v.size() - 1;
+
+        // Perform down-heap (bubble-down) operation to maintain heap property
+        while (idx <= sze)
+        {
+            int betterChild = getBetterChild(idx, sze);
+            if (betterChild == -1 || !compare(v[betterChild], v[idx]))
+            {
+                break;
+            }
+
+            swap(v[idx], v[betterChild]);
+            idx = betterChild;
+        }
+    }
+
+    // Alternative pop function using the heapify method
+    void pop2()
+    {
+        if (v.size() <= 1)
+        {
+            // Heap is empty
+            cout << "Heap is empty" << endl;
+            return;
+        }
+
+        int last_idx = v.size() - 1;
+        swap(v[1], v[last_idx]);
+        v.pop_back();
+        heapify(1);
+    }
+
     // Utility function to print the heap (for debugging purposes)
     void print()
     {
@@ -131,8 +252,14 @@ void solve()
     minHeap.push(40);
     minHeap.push(3);
 
+    cout << "Element at top: " << minHeap.top() << "\n";
+
+    minHeap.pop();
+
     cout << "Min-Heap: ";
     minHeap.print();
+
+    cout << "\n";
 
     Heap maxHeap(10, false); // Create a max-heap
     maxHeap.push(10);
@@ -141,6 +268,14 @@ void solve()
     maxHeap.push(7);
     maxHeap.push(40);
     maxHeap.push(3);
+
+    cout << "Element at top: " << maxHeap.top() << "\n";
+
+    cout << "Max-Heap: ";
+    maxHeap.print();
+
+    maxHeap.pop2();
+    cout << "Element at top: " << maxHeap.top() << "\n";
 
     cout << "Max-Heap: ";
     maxHeap.print();
