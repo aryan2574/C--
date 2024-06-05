@@ -63,6 +63,33 @@ void ayush_2574_cp()
 
 // Find diameter of the binary tree
 
+/*
+Initial Approach -
+
+The initial approach involves two separate functions: one for calculating the height and one for calculating the diameter.
+
+    Height Calculation Function:
+        This function calculates the height of a tree by recursively traversing it.
+        Time Complexity: O(n), where n is the number of nodes.
+        Space Complexity: O(h), where h is the height of the tree (due to recursion stack).
+
+    Diameter Calculation Function:
+        This function calculates the diameter by calling the height function for each node.
+        It calculates the diameter of the left and right subtrees, and also considers the path through the root.
+        Time Complexity: For each node, it calls the height function which is O(n). Since it does this for all n nodes, the overall time complexity is O(n2).
+        Space Complexity: O(h) due to recursion stack.
+
+Optimized Approach
+
+The optimized approach combines the height and diameter calculations into a single recursive function, avoiding redundant calculations.
+
+    Combined Height and Diameter Calculation:
+        This function calculates the height of the tree and the diameter in a single traversal.
+        It uses an additional parameter (reference) to keep track of the height while calculating the diameter.
+        Time Complexity: O(n), as each node is visited only once.
+        Space Complexity: O(h) due to recursion stack.
+*/
+
 class Pair
 {
 public:
