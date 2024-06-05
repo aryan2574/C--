@@ -61,6 +61,20 @@ void ayush_2574_cp()
 
 // ____________________________________________________________________________________
 
+// Level order traversal - Binary Tree
+
+/*
+IP- 8 10 1 -1 -1 6 9 -1 -1 7 -1 -1 3 -1 14 13 -1 -1 -1
+
+
+OP-
+Enter nodes data (use -1 for NULL): Level-order Traversal (Recursive):
+8
+10 3
+1 6 14
+9 7 13
+*/
+
 // Definition of the Node class
 class Node
 {
