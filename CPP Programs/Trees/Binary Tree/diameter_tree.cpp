@@ -63,6 +63,13 @@ void ayush_2574_cp()
 
 // Find diameter of the binary tree
 
+class Pair
+{
+public:
+    int height;
+    int diameter;
+};
+
 // Definition of the Node class
 class Node
 {
@@ -168,6 +175,25 @@ int diameter2(Node *root)
 {
     int height = 0;
     return diameterUtil(root, height);
+}
+
+// Method 3
+Pair diameter3(Node *root)
+{
+    Pair p;
+    if (root == NULL)
+    {
+        p.diameter = p.height = 0;
+        return p;
+    }
+
+    // Otherwise
+    Pair left = diameter3(root->left);
+    Pair right = diameter3(root->right);
+
+    p.height = max(left.height, right.height) + 1;
+    p.diameter = max(left.height + right.height, max(left.diameter, right.diameter));
+    return p;
 }
 
 void solve()
