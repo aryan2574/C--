@@ -61,19 +61,24 @@ void ayush_2574_cp()
 
 // ____________________________________________________________________________________
 
-// Binary tree implementation
+/*
+Replace each node in a binary tree with the sum of its child nodes (while not changing the leaf nodes), you need to traverse the tree and update each non-leaf node.
+*/
 
 /*
-IP- 8 10 1 -1 -1 6 9 -1 -1 7 -1 -1 3 -1 14 13 -1 -1 -1
+replaceWithChildSum Function:
 
-
-OP-
-Enter nodes data (use -1 for NULL): Level-order Traversal (Recursive):
-8
-10 3
-1 6 14
-9 7 13
+    Takes a pointer to the root of the tree.
+    If the node is NULL, it returns 0.
+    If the node is a leaf, it returns the node's data.
+    Recursively calculates the sum of the left and right subtrees.
+    Updates the current node's data with the sum of its child nodes.
+    Returns the sum including the current node's original value.
 */
+
+// I/P = 8 10 1 -1 -1 6 9 -1 -1 7 -1 -1 3 -1 14 13 -1 -1 -1
+
+// Output = 1 23 9 16 7 63 27 13 13
 
 // Definition of the Node class
 class Node
@@ -95,15 +100,15 @@ public:
 // Function to build a binary tree from user input
 Node *buildTree()
 {
-    int d;
-    cin >> d; // Read the data
+    int nodeData;
+    cin >> nodeData; // Read the data
 
     // Base case: if the input is -1, return NULL indicating no node
-    if (d == -1)
+    if (nodeData == -1)
         return NULL;
 
     // Create a new node with the input data
-    Node *root = new Node(d);
+    Node *root = new Node(nodeData);
 
     // Recursively build the left subtree
     root->left = buildTree();
@@ -115,46 +120,53 @@ Node *buildTree()
     return root;
 }
 
-// Function to perform in-order traversal of the tree
-void inOrderTraversal(Node *root)
+// Function to print the tree in inorder traversal
+void printTree(Node *root)
 {
     if (root == NULL)
-        return; // Base case: if the node is NULL, return
+        return;
 
-    inOrderTraversal(root->left);  // Recursively visit the left subtree
-    cout << root->data << " ";     // Visit the current node
-    inOrderTraversal(root->right); // Recursively visit the right subtree
+    // Recursively print the left subtree
+    printTree(root->left);
+
+    // Print the current node's data
+    cout << root->data << ' ';
+
+    // Recursively print the right subtree
+    printTree(root->right);
 }
 
-// Function to perform pre-order traversal of the tree
-void preOrderTraversal(Node *root)
+// Function to replace each node with the sum of its child nodes
+int replaceWithChildSum(Node *root)
 {
     if (root == NULL)
-        return; // Base case: if the node is NULL, return
+        return 0;
 
-    cout << root->data << " ";      // Visit the current node
-    preOrderTraversal(root->left);  // Recursively visit the left subtree
-    preOrderTraversal(root->right); // Recursively visit the right subtree
+    // Base case: If the node is a leaf, return its data
+    if (root->left == NULL && root->right == NULL)
+        return root->data;
+
+    // Recursively calculate the sum of the left and right subtrees
+    int leftSum = replaceWithChildSum(root->left);
+    int rightSum = replaceWithChildSum(root->right);
+
+    // Update the current node's data with the sum of its child nodes
+    int oldValue = root->data;
+    root->data = leftSum + rightSum;
+
+    // Return the sum including the current node's original value
+    return oldValue + root->data;
 }
 
-// Function to perform post-order traversal of the tree
-void postOrderTraversal(Node *root)
-{
-    if (root == NULL)
-        return; // Base case: if the node is NULL, return
-
-    postOrderTraversal(root->left);  // Recursively visit the left subtree
-    postOrderTraversal(root->right); // Recursively visit the right subtree
-    cout << root->data << " ";       // Visit the current node
-}
-
+// Main function to build the tree, replace nodes, and print the tree
 void solve()
 {
-    // Build the tree from input
-    Node *root = buildTree();
+    Node *root = buildTree(); // Build the tree
 
-    // Print the in-order traversal of the tree
-    inOrderTraversal(root);
+    replaceWithChildSum(root); // Replace each node with the sum of its child nodes
+
+    printTree(root); // Print the tree
+    cout << endl;
 }
 
 // _____________________________________________________________________________________
