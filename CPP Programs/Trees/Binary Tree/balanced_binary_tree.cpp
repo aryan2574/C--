@@ -72,6 +72,7 @@ Balanced binary tree from an array, you'll want to leverage the sorted nature of
 */
 
 // Definition of the Node class
+// Definition of the Node class
 class Node
 {
 public:
@@ -124,6 +125,41 @@ void printInOrder(Node *root)
     printInOrder(root->right);
 }
 
+// Class to store height and balance status of a node
+class HBPair
+{
+public:
+    int height;   // Height of the tree
+    bool balance; // Whether the tree is balanced or not
+};
+
+// Function to check if the tree is height-balanced
+HBPair isHeightBalance(Node *root)
+{
+    HBPair p;
+    if (root == NULL)
+    {
+        p.height = 0;
+        p.balance = true;
+        return p;
+    }
+
+    // Recursive case: check left and right subtrees
+    HBPair left = isHeightBalance(root->left);
+    HBPair right = isHeightBalance(root->right);
+
+    // Calculate height of current node
+    p.height = max(left.height, right.height) + 1;
+
+    // Check if the current node is balanced
+    if (abs(left.height - right.height) <= 1 && left.balance && right.balance)
+        p.balance = true;
+    else
+        p.balance = false;
+
+    return p;
+}
+
 void solve()
 {
     // Sorted array from which to build the balanced binary tree
@@ -136,6 +172,17 @@ void solve()
     // Print the tree in inorder traversal to verify
     printInOrder(root);
     cout << endl;
+
+    // Check if the tree is height-balanced
+    HBPair result = isHeightBalance(root);
+    if (result.balance)
+    {
+        cout << "The tree is balanced." << endl;
+    }
+    else
+    {
+        cout << "The tree is not balanced." << endl;
+    }
 }
 
 // _____________________________________________________________________________________
