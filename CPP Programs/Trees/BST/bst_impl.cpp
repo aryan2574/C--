@@ -140,6 +140,60 @@ Node *search(Node *root, int key)
     }
 }
 
+// Function to find the minimum value node in a subtree
+Node *findMin(Node *root)
+{
+    while (root->left != NULL)
+        root = root->left;
+    return root;
+}
+
+// Function to delete a node with a given key in the BST
+Node *deleteNode(Node *root, int key)
+{
+    // Base case: If the tree is empty
+    if (root == NULL)
+        return root;
+
+    // If the key to be deleted is less than the root's data, go to the left subtree
+    if (key < root->data)
+    {
+        root->left = deleteNode(root->left, key);
+    }
+    // If the key to be deleted is greater than the root's data, go to the right subtree
+    else if (key > root->data)
+    {
+        root->right = deleteNode(root->right, key);
+    }
+    // If the key is equal to the root's data, this is the node to be deleted
+    else
+    {
+        // Node with only one child or no child
+        if (root->left == NULL)
+        {
+            Node *temp = root->right;
+            delete root;
+            return temp;
+        }
+        else if (root->right == NULL)
+        {
+            Node *temp = root->left;
+            delete root;
+            return temp;
+        }
+
+        // Node with two children: Get the inorder successor (smallest in the right subtree)
+        Node *temp = findMin(root->right);
+
+        // Copy the inorder successor's content to this node
+        root->data = temp->data;
+
+        // Delete the inorder successor
+        root->right = deleteNode(root->right, temp->data);
+    }
+    return root;
+}
+
 // Function to perform inorder traversal of the tree
 void inorderTraversal(Node *root)
 {
@@ -174,6 +228,16 @@ void solve()
     {
         cout << "Node with data " << key << " not found in the BST." << endl;
     }
+
+    // Delete a key in the BST
+    cout << "Enter the number to delete from BST: ";
+    cin >> key;
+    root = deleteNode(root, key);
+
+    // Perform inorder traversal to print the BST after deletion
+    cout << "Inorder traversal of the BST after deletion: ";
+    inorderTraversal(root);
+    cout << endl;
 }
 
 // _____________________________________________________________________________________
