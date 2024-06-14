@@ -119,6 +119,27 @@ Node *buildTree()
     return root;
 }
 
+// Function to search for a node with a given key in the BST
+Node *search(Node *root, int key)
+{
+    // Base case: If the tree is empty or the root's data matches the key
+    if (root == NULL || root->data == key)
+    {
+        return root;
+    }
+
+    // If the key is less than the root's data, search in the left subtree
+    if (key < root->data)
+    {
+        return search(root->left, key);
+    }
+    // If the key is greater than the root's data, search in the right subtree
+    else
+    {
+        return search(root->right, key);
+    }
+}
+
 // Function to perform inorder traversal of the tree
 void inorderTraversal(Node *root)
 {
@@ -139,6 +160,20 @@ void solve()
     cout << "Inorder traversal of the BST: ";
     inorderTraversal(root);
     cout << endl;
+
+    // Search for a key in the BST
+    int key;
+    cout << "Enter the number to search in BST: ";
+    cin >> key;
+    Node *result = search(root, key);
+    if (result != NULL)
+    {
+        cout << "Found node with data: " << result->data << endl;
+    }
+    else
+    {
+        cout << "Node with data " << key << " not found in the BST." << endl;
+    }
 }
 
 // _____________________________________________________________________________________
